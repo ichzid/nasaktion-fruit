@@ -100,6 +100,12 @@ if (!isset($cart_count)) {
                    class="nav-link text-sm font-medium transition-colors <?= (strpos(uri_string(),'customer/shop') !== false ? 'text-primary-700 active' : 'text-gray-500 hover:text-gray-800') ?>">
                     Belanja
                 </a>
+                <?php if($this->session->userdata('customer_id')): ?>
+                <a href="<?= site_url('customer/dashboard/orders') ?>"
+                   class="nav-link text-sm font-medium transition-colors <?= (uri_string() == 'customer/dashboard/orders' ? 'text-primary-700 active' : 'text-gray-500 hover:text-gray-800') ?>">
+                    Pesanan Saya
+                </a>
+                <?php endif; ?>
             </div>
 
             <!-- Right actions -->
@@ -136,20 +142,27 @@ if (!isset($cart_count)) {
                         <a href="<?= site_url('customer/dashboard') ?>" class="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-600 hover:bg-primary-50 hover:text-primary-700 transition-colors">
                             <span class="iconify" data-icon="lucide:layout-dashboard"></span> Dashboard
                         </a>
-                        <a href="<?= site_url('customer/shop') ?>" class="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-600 hover:bg-primary-50 hover:text-primary-700 transition-colors">
-                            <span class="iconify" data-icon="lucide:package-search"></span> Belanja
+                        <a href="<?= site_url('customer/dashboard/profile') ?>" class="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-600 hover:bg-primary-50 hover:text-primary-700 transition-colors">
+                            <span class="iconify" data-icon="lucide:user"></span> Profil Saya
+                        </a>
+                        <div class="border-t border-gray-100 my-1"></div>
+                        <a href="<?= site_url('customer/dashboard/orders') ?>" class="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-600 hover:bg-primary-50 hover:text-primary-700 transition-colors">
+                            <span class="iconify" data-icon="lucide:clipboard-list"></span> Pesanan Saya
                         </a>
                         <a href="<?= site_url('customer/cart') ?>" class="flex items-center justify-between px-4 py-2 text-sm text-gray-600 hover:bg-primary-50 hover:text-primary-700 transition-colors">
                             <div class="flex items-center gap-2.5">
-                                <span class="iconify" data-icon="lucide:shopping-bag"></span> Keranjang
+                                <span class="iconify" data-icon="lucide:shopping-bag"></span> Keranjang Belanja
                             </div>
                             <span id="cartBadgeDropdown" class="cart-badge bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full <?= ($cart_count > 0) ? '' : 'hidden' ?>"><?= $cart_count ?></span>
                         </a>
-                        <div class="border-t border-gray-100 mt-1 pt-1">
-                            <a href="<?= site_url('customer/auth/logout') ?>" class="flex items-center gap-2.5 px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition-colors">
-                                <span class="iconify" data-icon="lucide:log-out"></span> Keluar
-                            </a>
-                        </div>
+                        <div class="border-t border-gray-100 my-1"></div>
+                        <a href="<?= site_url('customer/shop') ?>" class="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-600 hover:bg-primary-50 hover:text-primary-700 transition-colors">
+                            <span class="iconify" data-icon="lucide:package-search"></span> Katalog Produk
+                        </a>
+                        <div class="border-t border-gray-100 my-1"></div>
+                        <a href="<?= site_url('customer/auth/logout') ?>" class="flex items-center gap-2.5 px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition-colors font-medium">
+                            <span class="iconify" data-icon="lucide:log-out"></span> Keluar Sesi
+                        </a>
                     </div>
                 </div>
                 <?php else: ?>

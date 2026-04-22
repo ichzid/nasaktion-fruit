@@ -59,7 +59,7 @@
     <div class="lg:col-span-1 lg:sticky lg:top-4 space-y-3 pos-scroll">
 
         <!-- Customer -->
-        <div class="bg-white rounded-xl border border-gray-200 p-4">
+        <div class="bg-white rounded-xl border border-gray-200 p-4 relative">
             <label class="text-sm font-semibold text-gray-700 mb-2 block">Pelanggan (Opsional)</label>
             <div class="flex gap-2">
                 <input type="text" id="customerSearch" placeholder="Cari nama/no. HP..." class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500 outline-none">
@@ -68,7 +68,7 @@
                 </button>
             </div>
             <!-- Search Results Dropdown -->
-            <div id="searchResults" class="hidden mt-1 border border-gray-200 rounded-lg max-h-32 overflow-y-auto bg-white shadow-sm z-10"></div>
+            <div id="searchResults" class="hidden mt-1 border border-gray-200 rounded-lg max-h-56 overflow-y-auto bg-white shadow-lg z-50 absolute left-0 right-0"></div>
             <!-- Selected Customer -->
             <div id="customerResult" class="hidden mt-2">
                 <div class="flex items-center justify-between bg-green-50 border border-green-200 rounded-lg p-2">
@@ -80,12 +80,34 @@
                 </div>
             </div>
             <!-- New Customer Form -->
-            <div id="newCustomerForm" class="hidden mt-2 bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                <p class="text-xs text-yellow-700 font-semibold mb-2">Pelanggan baru – daftarkan:</p>
-                <input type="text" id="newCustNama" placeholder="Nama *" class="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm mb-1 outline-none">
-                <input type="text" id="newCustWA" placeholder="No. WhatsApp" class="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm outline-none">
-                <button onclick="registerNewCustomer()" class="mt-2 bg-yellow-500 hover:bg-yellow-600 text-white text-xs px-3 py-1.5 rounded-lg transition">Daftarkan & Pilih</button>
-                <button onclick="document.getElementById('newCustomerForm').classList.add('hidden')" class="mt-2 ml-2 text-xs text-gray-500 hover:underline">Lewati</button>
+            <div id="newCustomerForm" class="hidden mt-3 bg-blue-50 border border-blue-200 rounded-xl p-4">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="iconify text-blue-600 text-lg" data-icon="lucide:user-plus"></span>
+                    <p class="text-sm font-bold text-blue-800">Daftarkan Pelanggan Baru</p>
+                </div>
+                <div class="space-y-2">
+                    <div>
+                        <label class="text-xs font-semibold text-gray-600 mb-1 block">Nama Lengkap <span class="text-red-500">*</span></label>
+                        <input type="text" id="newCustNama" placeholder="Cth: Budi Santoso"
+                               class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 outline-none bg-white">
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-600 mb-1 block">No. WhatsApp <span class="text-gray-400">(Opsional)</span></label>
+                        <input type="text" id="newCustWA" placeholder="Cth: 0812345678"
+                               class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 outline-none bg-white">
+                        <p class="text-[10px] text-gray-400 mt-1">Jika no. HP sudah terdaftar, data member lama akan digunakan</p>
+                    </div>
+                </div>
+                <div class="flex gap-2 mt-3">
+                    <button id="btnRegisterCust" onclick="registerNewCustomer()"
+                            class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2 rounded-lg transition flex items-center justify-center gap-1.5">
+                        <span class="iconify" data-icon="lucide:check"></span> Daftarkan & Pilih
+                    </button>
+                    <button onclick="document.getElementById('newCustomerForm').classList.add('hidden'); document.getElementById('customerSearch').focus();"
+                            class="px-3 py-2 text-sm text-gray-500 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                        Batal
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -115,14 +137,6 @@
 
         <!-- Payment -->
         <div class="bg-white rounded-xl border border-gray-200 p-4">
-            <div class="mb-3">
-                <label class="text-sm font-semibold text-gray-700 mb-1 block">Metode Pembayaran</label>
-                <select id="paymentMethod" onchange="toggleCashSection()" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none">
-                    <option value="cash">💵 Tunai</option>
-                    <option value="transfer">🏦 Transfer</option>
-                    <option value="qris">📱 QRIS</option>
-                </select>
-            </div>
             <div id="cashSection" class="mb-3">
                 <label class="text-sm font-semibold text-gray-700 mb-1 block">Uang Diterima</label>
                 <input type="number" id="cashReceived" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none" placeholder="0" oninput="calcChange()">
@@ -287,12 +301,9 @@ function updateSummary(subtotal) {
 function getSubtotal() { let t = 0; for (let id in posCart) t += posCart[id].harga * posCart[id].qty; return t; }
 function getTotal()    { return Math.max(0, getSubtotal() - currentDiscount); }
 function fmt(n)        { return parseInt(n).toLocaleString('id-ID'); }
+function escHtml(str)  { return str ? str.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])) : ''; }
 
 // ========== Cash Change ==========
-function toggleCashSection() {
-    const method = document.getElementById('paymentMethod').value;
-    document.getElementById('cashSection').style.display = method === 'cash' ? '' : 'none';
-}
 function calcChange() {
     const cash = parseInt(document.getElementById('cashReceived').value) || 0;
     const kembalian = Math.max(0, cash - getTotal());
@@ -319,14 +330,44 @@ function searchCustomer() {
             } else {
                 let html = '';
                 data.results.forEach(c => {
-                    html += `<div class="px-3 py-2 text-sm hover:bg-primary-50 cursor-pointer border-b border-gray-100 last:border-0" onclick="selectCustomer(${c.id},'${escHtml(c.nama)}','${escHtml(c.no_hp||'')}')">
-                        <span class="font-medium">${escHtml(c.nama)}</span>
-                        <span class="text-xs text-gray-400 ml-2">${escHtml(c.no_hp||'')}</span>
-                        <span class="ml-1 text-xs px-1.5 py-0.5 rounded-full bg-primary-100 text-primary-700">${c.segment}</span>
+                    const segColor = c.segment === 'Platinum' ? 'bg-purple-100 text-purple-700' :
+                                     c.segment === 'Gold'     ? 'bg-yellow-100 text-yellow-700' :
+                                     c.segment === 'Silver'   ? 'bg-slate-100 text-slate-600' :
+                                                                'bg-gray-100 text-gray-600';
+                    html += `<div class="customer-suggestion flex items-center justify-between px-4 py-3 hover:bg-primary-50 cursor-pointer border-b border-gray-100 last:border-0 transition-colors group"
+                                 data-id="${c.id}"
+                                 data-nama="${escHtml(c.nama)}"
+                                 data-hp="${escHtml(c.no_hp||'')}">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center shrink-0">
+                                <span class="text-primary-700 text-xs font-black">${escHtml(c.nama.charAt(0).toUpperCase())}</span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-gray-800 group-hover:text-primary-700">${escHtml(c.nama)}</p>
+                                <p class="text-xs text-gray-400">${escHtml(c.no_hp||'-')}</p>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide ${segColor}">${c.segment}</span>
                     </div>`;
                 });
+                // Add "register new" option at bottom
+                html += `<div class="px-4 py-2.5 text-xs text-gray-400 cursor-pointer hover:bg-gray-50 border-t border-gray-100 flex items-center gap-2" onclick="showNewCustomerForm()">
+                    <span class="iconify text-sm text-primary-500" data-icon="lucide:user-plus"></span>
+                    Tidak ada? <span class="text-primary-600 font-semibold">Daftarkan pelanggan baru</span>
+                </div>`;
                 resultsDiv.innerHTML = html;
                 resultsDiv.classList.remove('hidden');
+
+                // Attach click handlers via JS (safe for names with special chars)
+                resultsDiv.querySelectorAll('.customer-suggestion').forEach(el => {
+                    el.addEventListener('click', function() {
+                        selectCustomer(
+                            parseInt(this.dataset.id),
+                            this.dataset.nama,
+                            this.dataset.hp
+                        );
+                    });
+                });
             }
         }).catch(() => { resultsDiv.classList.add('hidden'); });
 }
@@ -338,62 +379,141 @@ function showNewCustomerForm() {
 
 function selectCustomer(id, nama, phone) {
     selectedCustomerId = id;
+    // Fill the search input with phone number only
+    document.getElementById('customerSearch').value = phone || '';
+    // Show the selected customer card below
     document.getElementById('custName').textContent  = nama;
     document.getElementById('custPhone').textContent = phone || 'Pelanggan terdaftar';
     document.getElementById('customerResult').classList.remove('hidden');
     document.getElementById('searchResults').classList.add('hidden');
     document.getElementById('newCustomerForm').classList.add('hidden');
-    document.getElementById('customerSearch').value = '';
+    showToast('Pelanggan dipilih: ' + nama, 'success');
 }
 
 function clearCustomer() {
     selectedCustomerId = null;
     document.getElementById('customerResult').classList.add('hidden');
+    document.getElementById('searchResults').classList.add('hidden');
     document.getElementById('customerSearch').value = '';
+    document.getElementById('customerSearch').focus();
 }
 
 function registerNewCustomer() {
-    const nama  = document.getElementById('newCustNama').value.trim();
-    const wa    = document.getElementById('newCustWA').value.trim();
+    const nama = document.getElementById('newCustNama').value.trim();
+    const wa   = document.getElementById('newCustWA').value.trim();
     if (!nama) { showToast('Nama wajib diisi!', 'error'); return; }
+
+    const btn = document.getElementById('btnRegisterCust');
+    if (btn) { btn.disabled = true; btn.textContent = 'Menyimpan...'; }
+
+    const resetBtn = () => {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '<span class="iconify" data-icon="lucide:check"></span> Daftarkan & Pilih';
+        }
+    };
+
     fetch('<?= site_url("admin/pos/register_customer") ?>', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: 'nama=' + encodeURIComponent(nama) + '&no_hp=' + encodeURIComponent(wa)
-    }).then(r => r.json()).then(data => {
+    })
+    .then(r => r.text())
+    .then(text => {
+        resetBtn();
+        let data;
+        try { data = JSON.parse(text); }
+        catch(e) {
+            console.error('Server response (not JSON):', text);
+            showToast('Gagal: server tidak merespons JSON. Cek console.', 'error');
+            return;
+        }
+
         if (data.success) {
-            selectCustomer(data.id, data.nama, data.no_hp);
-            document.getElementById('newCustomerForm').classList.add('hidden');
+            // Update UI
+            selectedCustomerId = data.id;
+            const el_name  = document.getElementById('custName');
+            const el_phone = document.getElementById('custPhone');
+            const el_result= document.getElementById('customerResult');
+            const el_form  = document.getElementById('newCustomerForm');
+            const el_search= document.getElementById('customerSearch');
+            const el_sres  = document.getElementById('searchResults');
+
+            if (el_name)   el_name.textContent  = data.nama || '';
+            if (el_phone)  el_phone.textContent  = data.no_hp || 'Pelanggan terdaftar';
+            if (el_result) el_result.classList.remove('hidden');
+            if (el_sres)   el_sres.classList.add('hidden');
+            if (el_form)   el_form.classList.add('hidden');
+            if (el_search) el_search.value = data.no_hp || '';
+
+            // Reset form fields
             document.getElementById('newCustNama').value = '';
             document.getElementById('newCustWA').value = '';
-            showToast('Pelanggan berhasil didaftarkan!', 'success');
+            showToast('✓ Pelanggan didaftarkan: ' + data.nama, 'success');
         } else {
             showToast(data.message || 'Gagal mendaftarkan!', 'error');
         }
+    })
+    .catch(err => {
+        resetBtn();
+        showToast('Koneksi ke server gagal!', 'error');
+        console.error('registerNewCustomer fetch error:', err);
     });
 }
 
 // ========== Voucher ==========
 function applyVoucher() {
     const code = document.getElementById('voucherCode').value.trim().toUpperCase();
-    if (!code) return;
+    if (!code) { showToast('Masukkan kode voucher!', 'error'); return; }
     const total = getSubtotal();
     if (total === 0) { showToast('Tambahkan produk terlebih dahulu!', 'error'); return; }
+
+    const btnVoucher = document.querySelector('button[onclick="applyVoucher()"]');
+    if (btnVoucher) { btnVoucher.disabled = true; btnVoucher.textContent = '...'; }
+
     fetch(`<?= site_url("admin/pos/apply_voucher") ?>?code=${encodeURIComponent(code)}&total=${total}`)
-        .then(r => r.json()).then(data => {
-            if (data.valid) {
-                currentDiscount    = data.discount;
-                currentDiscountId  = data.discount_id;
-                appliedVoucherCode = code;
-                updateSummary(getSubtotal());
-                const info = document.getElementById('voucherInfo');
-                info.textContent = `✓ ${data.nama_promo} — Diskon Rp ${fmt(data.discount)}`;
+    .then(r => r.text())
+    .then(text => {
+        if (btnVoucher) { btnVoucher.disabled = false; btnVoucher.textContent = 'Pasang'; }
+        let data;
+        try { data = JSON.parse(text); }
+        catch(e) {
+            console.error('Voucher response:', text);
+            showToast('Server error saat validasi voucher!', 'error');
+            return;
+        }
+        if (data.valid) {
+            currentDiscount    = parseFloat(data.discount) || 0;
+            currentDiscountId  = data.discount_id;
+            appliedVoucherCode = code;
+            updateSummary(getSubtotal());
+            const info = document.getElementById('voucherInfo');
+            if (info) {
+                info.innerHTML = `✓ <strong>${data.nama_promo}</strong> — Diskon Rp ${fmt(data.discount)}
+                    <span class="ml-2 cursor-pointer text-red-400 hover:text-red-600" onclick="removeVoucher()">✕ Hapus</span>`;
                 info.classList.remove('hidden');
-                showToast('Voucher berhasil dipasang!', 'success');
-            } else {
-                showToast(data.message || 'Voucher tidak valid!', 'error');
             }
-        });
+            showToast('✓ Voucher ' + code + ' berhasil dipasang!', 'success');
+        } else {
+            showToast(data.message || 'Voucher tidak valid!', 'error');
+        }
+    })
+    .catch(err => {
+        if (btnVoucher) { btnVoucher.disabled = false; btnVoucher.textContent = 'Pasang'; }
+        showToast('Koneksi gagal saat cek voucher!', 'error');
+        console.error(err);
+    });
+}
+
+function removeVoucher() {
+    currentDiscount    = 0;
+    currentDiscountId  = null;
+    appliedVoucherCode = '';
+    document.getElementById('voucherCode').value = '';
+    const info = document.getElementById('voucherInfo');
+    if (info) { info.classList.add('hidden'); info.innerHTML = ''; }
+    updateSummary(getSubtotal());
+    showToast('Voucher dihapus', 'success');
 }
 
 // ========== Process Transaction ==========
@@ -401,11 +521,8 @@ function processTransaction() {
     const keys = Object.keys(posCart);
     if (keys.length === 0) { showToast('Keranjang masih kosong!', 'error'); return; }
 
-    const method = document.getElementById('paymentMethod').value;
-    if (method === 'cash') {
-        const cash = parseInt(document.getElementById('cashReceived').value) || 0;
-        if (cash < getTotal()) { showToast('Uang diterima kurang dari total!', 'error'); return; }
-    }
+    const cash = parseInt(document.getElementById('cashReceived').value) || 0;
+    if (cash < getTotal()) { showToast('Uang diterima kurang dari total!', 'error'); return; }
 
     const cartData = keys.map(id => ({
         product_id: parseInt(id),
@@ -419,7 +536,7 @@ function processTransaction() {
     // Build form body without CSRF (CSRF may be disabled for AJAX or use header)
     let body = 'items=' + encodeURIComponent(JSON.stringify(cartData));
     body += '&customer_id=' + (selectedCustomerId || '');
-    body += '&payment_method=' + method;
+    body += '&payment_method=cash';
     body += '&discount=' + currentDiscount;
     body += '&discount_id=' + (currentDiscountId || '');
     body += '&catatan=' + encodeURIComponent(document.getElementById('posNote').value);
@@ -551,8 +668,6 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// Init
-toggleCashSection();
 </script>
 
 <?= $this->load->view('admin/layout/footer', [], TRUE) ?>

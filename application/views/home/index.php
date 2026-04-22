@@ -156,7 +156,7 @@
 <body class="bg-white overflow-x-hidden">
 
     <!-- ===== NAVBAR ===== -->
-    <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300" style="background:rgba(240,253,244,0.7);backdrop-filter:blur(20px);border-bottom:1px solid rgba(22,163,74,0.1);">
+    <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300" style="background:rgba(240,253,244,0.7);backdrop-filter:blur(20px);">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
             <a href="<?= site_url() ?>" class="flex items-center gap-2.5 group">
                 <div class="w-9 h-9 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
@@ -277,8 +277,8 @@
         </div>
 
         <!-- Bottom wave -->
-        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none pointer-events-none">
-            <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div class="absolute left-0 w-full overflow-hidden leading-none pointer-events-none" style="bottom:-1px;">
+            <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;">
                 <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="white"/>
             </svg>
         </div>

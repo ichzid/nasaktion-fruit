@@ -154,7 +154,7 @@ class Pos extends AdminBaseController {
             'diskon_amount' => $diskon_amount,
             'total'         => $total,
             'jenis_order'   => 'Offline',
-            'status'        => 'paid',
+            'status'        => 'completed',
             'catatan'       => $this->input->post('catatan', TRUE),
         ];
 

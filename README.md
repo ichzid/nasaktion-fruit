@@ -83,13 +83,13 @@ $db['default'] = array(
 Buka file `application/config/config.php` dan sesuaikan `base_url`:
 
 ```php
-$config['base_url'] = 'http://localhost/toko-online/';
+$config['base_url'] = (isset($_SERVER['HTTPS']) ? "https://" : "http://").$_SERVER['HTTP_HOST'].str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
 ```
 
 ### 5. Jalankan Aplikasi
 
 Pindahkan folder ke direktori web server Anda (misal `htdocs` di XAMPP) dan akses melalui browser:
-`http://localhost/toko-online/`
+`http://localhost/nasaktion-fruit/`
 
 ---
 

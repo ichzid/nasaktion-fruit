@@ -33,8 +33,8 @@ class Transactions extends AdminBaseController {
             redirect('admin/transactions');
         }
 
-        if ($transaction->status !== 'paid') {
-            $this->session->set_flashdata('error', 'Hanya transaksi berstatus paid yang bisa diverifikasi!');
+        if ($transaction->status !== 'paid' && $transaction->status !== 'pending') {
+            $this->session->set_flashdata('error', 'Hanya transaksi tertunda atau yang sudah direview (paid) yang bisa diverifikasi!');
             redirect('admin/transactions/view/' . $id);
         }
 
@@ -44,14 +44,32 @@ class Transactions extends AdminBaseController {
         foreach ($items as $item) {
             $this->Product_model->reduce_stock($item->product_id, $item->qty);
         }
-        $this->Transaction_model->update($id, array('status' => 'verified'));
+        
+        $admin_id = isset($this->admin_data['admin_id']) ? $this->admin_data['admin_id'] : null;
+        $update_data = array('status' => 'verified');
+        if ($admin_id) {
+            $update_data['admin_id'] = $admin_id;
+        }
+        $this->Transaction_model->update($id, $update_data);
+        
         $this->db->trans_complete();
 
-        if ($this->db->trans_status()) {
-            $this->session->set_flashdata('success', 'Transaksi berhasil diverifikasi!');
-        } else {
+        if ($this->db->trans_status() === FALSE) {
             $this->session->set_flashdata('error', 'Gagal verifikasi transaksi!');
+        } else {
+            $this->session->set_flashdata('success', 'Transaksi berhasil diverifikasi! Stok dipotong.');
         }
+        redirect('admin/transactions/view/' . $id);
+    }
+
+    public function ship($id) {
+        $transaction = $this->Transaction_model->get_by_id($id);
+        if (!$transaction || $transaction->status !== 'verified') {
+            $this->session->set_flashdata('error', 'Pesanan tidak valid untuk dikirim!');
+            redirect('admin/transactions/view/' . $id);
+        }
+        $this->Transaction_model->update($id, array('status' => 'shipped'));
+        $this->session->set_flashdata('success', 'Status pesanan diubah menjadi: Sedang Dikirim.');
         redirect('admin/transactions/view/' . $id);
     }
 

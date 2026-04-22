@@ -91,7 +91,7 @@ class CustomerBaseController extends MY_Controller {
     private function load_customer_data() {
         $this->customer_data = array(
             'customer_id' => $this->session->userdata('customer_id'),
-            'nama' => $this->session->userdata('customer_nama'),
+            'customer_nama' => $this->session->userdata('customer_nama'),
             'email' => $this->session->userdata('customer_email'),
             'segment' => $this->session->userdata('customer_segment'),
             'point_loyalitas' => $this->session->userdata('customer_points'),

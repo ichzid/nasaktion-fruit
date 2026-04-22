@@ -100,7 +100,7 @@ class Dashboard extends CustomerBaseController {
             if ($this->upload->do_upload('bukti_transfer')) {
                 $file_name = $this->upload->data('file_name');
                 $this->Transaction_model->update($id, array(
-                    'bukti_transfer' => $file_name,
+                    'bukti_tf' => $file_name,
                     'status' => 'paid',
                 ));
                 $this->session->set_flashdata('success', 'Bukti pembayaran berhasil diupload! Menunggu verifikasi.');
@@ -110,6 +110,52 @@ class Dashboard extends CustomerBaseController {
         } else {
             $this->session->set_flashdata('error', 'Pilih file terlebih dahulu!');
         }
+        redirect('customer/dashboard/order_detail/' . $id);
+    }
+
+    public function cancel_order($id) {
+        $customer_id = $this->customer_data['customer_id'];
+        $transaction = $this->Transaction_model->get_by_id($id);
+
+        if (!$transaction || $transaction->customer_id != $customer_id) {
+            $this->session->set_flashdata('error', 'Pesanan tidak ditemukan!');
+            redirect('customer/dashboard/orders');
+        }
+
+        if ($transaction->status !== 'pending') {
+            $this->session->set_flashdata('error', 'Pesanan ini tidak bisa dibatalkan karena sudah diproses!');
+            redirect('customer/dashboard/order_detail/' . $id);
+        }
+
+        if ($this->Transaction_model->update($id, array('status' => 'cancelled'))) {
+            $this->session->set_flashdata('success', 'Pesanan berhasil dibatalkan.');
+        } else {
+            $this->session->set_flashdata('error', 'Gagal membatalkan pesanan.');
+        }
+
+        redirect('customer/dashboard/order_detail/' . $id);
+    }
+
+    public function complete_order($id) {
+        $customer_id = $this->customer_data['customer_id'];
+        $transaction = $this->Transaction_model->get_by_id($id);
+        
+        if (!$transaction || $transaction->customer_id != $customer_id) {
+            $this->session->set_flashdata('error', 'Pesanan tidak ditemukan!');
+            redirect('customer/dashboard/orders');
+        }
+
+        if ($transaction->status !== 'shipped') {
+            $this->session->set_flashdata('error', 'Pesanan ini belum dalam status pengiriman!');
+            redirect('customer/dashboard/order_detail/' . $id);
+        }
+
+        if ($this->Transaction_model->update($id, array('status' => 'completed'))) {
+            $this->session->set_flashdata('success', 'Terima kasih telah mengonfirmasi penerimaan pesanan!');
+        } else {
+            $this->session->set_flashdata('error', 'Gagal menyelesaikan pesanan.');
+        }
+
         redirect('customer/dashboard/order_detail/' . $id);
     }
 }

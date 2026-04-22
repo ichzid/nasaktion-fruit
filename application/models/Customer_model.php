@@ -193,4 +193,31 @@ class Customer_model extends CI_Model {
         $this->db->order_by('c.total_belanja', 'DESC');
         return $this->db->get()->result();
     }
+
+    /**
+     * For POS walk-in: find existing customer by phone or create a new offline one.
+     * Returns the customer object on success, or false on failure.
+     */
+    public function auto_unify_offline($nama, $no_hp = null) {
+        // If phone is provided, check for existing customer first
+        if ($no_hp) {
+            $existing = $this->get_by_phone($no_hp);
+            if ($existing) {
+                return $existing;
+            }
+        }
+
+        // Create new offline customer
+        $data = [
+            'nama'          => $nama,
+            'no_hp'         => $no_hp,
+            'tipe_customer' => 'Offline',
+            'segment'       => 'Baru',
+        ];
+        $new_id = $this->insert($data);
+        if ($new_id) {
+            return $this->get_by_id($new_id);
+        }
+        return false;
+    }
 }

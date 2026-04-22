@@ -21,7 +21,7 @@ class Dashboard extends AdminBaseController {
         $data['unread_feedback'] = $this->Feedback_model->count_unread();
         $data['today_sales'] = $this->Transaction_model->get_today_sales();
         $data['month_sales'] = $this->Transaction_model->get_month_sales();
-        $data['low_stock_products'] = $this->Product_model->get_low_stock();
+        $data['low_stock_products'] = $this->Product_model->get_low_stock(10);
         $data['recent_transactions'] = $this->Transaction_model->get_recent(5);
         $data['top_products'] = $this->Transaction_model->get_top_products(5);
         $data['sales_chart'] = $this->Transaction_model->get_sales_chart_data(7);

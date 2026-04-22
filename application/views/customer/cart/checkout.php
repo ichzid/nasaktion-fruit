@@ -93,8 +93,8 @@
                     <select name="kode_voucher" id="kode_voucher" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-primary-300">
                         <option value="">-- Pilih Voucher Jika Ada --</option>
                         <?php foreach($vouchers as $v): ?>
-                        <option value="<?= $v->kode_voucher ?>" data-tipe="<?= $v->tipe_diskon ?>" data-nilai="<?= $v->nilai_diskon ?>" data-min="<?= $v->min_belanja ?>">
-                            <?= $v->kode_voucher ?> - Diskon <?= $v->tipe_diskon=='persen' ? $v->nilai_diskon.'%' : 'Rp '.number_format($v->nilai_diskon,0,',','.') ?>
+                        <option value="<?= $v->kode_voucher ?>" data-tipe="<?= $v->tipe ?>" data-nilai="<?= $v->nilai ?>" data-min="<?= $v->min_belanja ?>">
+                            <?= $v->kode_voucher ?> - Diskon <?= $v->tipe=='persen' ? $v->nilai.'%' : 'Rp '.number_format($v->nilai,0,',','.') ?>
                         </option>
                         <?php endforeach; ?>
                     </select>

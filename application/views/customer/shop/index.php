@@ -107,8 +107,9 @@
                 <p class="text-base font-bold text-primary-600">Rp <?= number_format($p->harga_jual,0,',','.') ?></p>
                 <?php if($p->stok > 0): ?>
                 <button onclick="addToCart(<?= $p->id ?>, this)"
-                        class="w-9 h-9 bg-primary-600 hover:bg-primary-700 active:scale-90 text-white rounded-xl flex items-center justify-center transition-all shadow-sm hover:shadow-md">
+                        class="h-9 px-3 bg-primary-600 hover:bg-primary-700 active:scale-95 text-white rounded-xl flex items-center justify-center gap-1.5 transition-all shadow-sm hover:shadow-md text-xs font-bold btn-add-cart">
                     <span class="iconify" data-icon="lucide:plus"></span>
+                    <span>Keranjang</span>
                 </button>
                 <?php else: ?>
                 <button disabled class="w-9 h-9 bg-gray-100 text-gray-400 rounded-xl flex items-center justify-center cursor-not-allowed">
@@ -186,7 +187,7 @@ function addToCart(productId, btn) {
     <?php endif; ?>
 
     const origHTML = btn.innerHTML;
-    btn.innerHTML = '<span class="iconify animate-spin" data-icon="lucide:loader-2"></span>';
+    btn.innerHTML = '<span class="iconify animate-spin" data-icon="lucide:loader-2"></span> <span>...</span>';
     btn.disabled = true;
 
     fetch('<?= site_url('customer/cart/add') ?>', {
@@ -203,7 +204,7 @@ function addToCart(productId, btn) {
                 badge.classList.remove('hidden');
             });
 
-            btn.innerHTML = '<span class="iconify" data-icon="lucide:check"></span>';
+            btn.innerHTML = '<span class="iconify" data-icon="lucide:check"></span> <span>Berhasil</span>';
             btn.classList.remove('bg-primary-600','hover:bg-primary-700');
             btn.classList.add('bg-green-500');
             

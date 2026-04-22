@@ -50,11 +50,13 @@
 </div>
 
 <!-- ===== QUICK ACTIONS ===== -->
-<div class="grid grid-cols-3 gap-4 mb-8">
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4 mb-8">
     <?php
     $actions = [
         ['href'=>site_url('customer/shop'),       'icon'=>'lucide:shopping-bag',    'label'=>'Belanja',       'bg'=>'bg-primary-50',  'ic'=>'text-primary-600'],
+        ['href'=>site_url('customer/dashboard/orders'), 'icon'=>'lucide:clipboard-list', 'label'=>'Pesanan',     'bg'=>'bg-amber-50',    'ic'=>'text-amber-600'],
         ['href'=>site_url('customer/cart'),       'icon'=>'lucide:shopping-cart',   'label'=>'Keranjang',     'bg'=>'bg-blue-50',     'ic'=>'text-blue-600'],
+        ['href'=>site_url('customer/dashboard/profile'), 'icon'=>'lucide:user-cog',      'label'=>'Profil',      'bg'=>'bg-green-50',    'ic'=>'text-green-600'],
         ['href'=>site_url('customer/feedback'),   'icon'=>'lucide:message-square',  'label'=>'Feedback',      'bg'=>'bg-purple-50',   'ic'=>'text-purple-600'],
     ];
     foreach($actions as $a):
@@ -157,8 +159,21 @@
             </div>
             <div class="text-right flex-shrink-0">
                 <p class="text-sm font-bold text-gray-900">Rp <?= number_format($o->total,0,',','.') ?></p>
-                <span class="text-xs px-2 py-0.5 rounded-full font-semibold <?= $o->status=='completed'?'bg-green-100 text-green-700':'bg-yellow-100 text-yellow-700' ?>">
-                    <?= ucfirst($o->status) ?>
+                <?php
+                    $st_badge = [
+                         'pending' => ['Tertunda', 'bg-yellow-100 text-yellow-700'],
+                         'paid' => ['Dibayar', 'bg-blue-100 text-blue-700'],
+                         'verified' => ['Di Proses', 'bg-indigo-100 text-indigo-700'],
+                         'shipped' => ['Dikirim', 'bg-cyan-100 text-cyan-700'],
+                         'completed' => ['Selesai', 'bg-green-100 text-green-700'],
+                         'cancelled' => ['Dibatalkan', 'bg-red-100 text-red-700']
+                    ];
+                    $st_key = $o->status ?? 'pending';
+                    $st_label = isset($st_badge[$st_key]) ? $st_badge[$st_key][0] : ucfirst($st_key);
+                    $st_color = isset($st_badge[$st_key]) ? $st_badge[$st_key][1] : 'bg-gray-100 text-gray-700';
+                ?>
+                <span class="text-xs px-2 py-0.5 rounded-full font-semibold <?= $st_color ?>">
+                    <?= $st_label ?>
                 </span>
             </div>
         </div>

@@ -26,11 +26,12 @@
                 <p class="text-xs text-gray-500">Min. belanja Rp <?= number_format($d->min_belanja, 0, ',', '.') ?></p>
             </div>
             <div class="flex items-center justify-between text-xs text-gray-500">
+                <?php if($d->tanggal_mulai && $d->tanggal_selesai): ?>
                 <span>Berlaku: <?= date('d M Y', strtotime($d->tanggal_mulai)) ?> - <?= date('d M Y', strtotime($d->tanggal_selesai)) ?></span>
+                <?php else: ?>
+                <span>Berlaku: Selamanya</span>
+                <?php endif; ?>
             </div>
-            <?php if(!empty($d->max_pemakaian)): ?>
-            <p class="text-xs text-gray-500 mt-1">Terpakai: <?= $d->total_pemakaian ?? 0 ?>/<?= $d->max_pemakaian ?></p>
-            <?php endif; ?>
         </div>
         <div class="border-t border-gray-100 p-3 flex items-center justify-between">
             <a href="<?= site_url('admin/discounts/toggle/'.$d->id) ?>" class="text-xs <?= $d->is_active?'text-red-500':'text-green-600' ?> hover:underline"><?= $d->is_active?'Nonaktifkan':'Aktifkan' ?></a>
@@ -81,18 +82,15 @@
             </div>
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Mulai *</label>
-                    <input type="date" name="tanggal_mulai" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none" required>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Mulai</label>
+                    <input type="date" name="tanggal_mulai" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Selesai *</label>
-                    <input type="date" name="tanggal_selesai" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none" required>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Selesai</label>
+                    <input type="date" name="tanggal_selesai" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none">
                 </div>
             </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Max Pemakaian</label>
-                <input type="number" name="max_pemakaian" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none" placeholder="Kosongkan = tanpa batas">
-            </div>
+            <p class="text-xs text-gray-400">Kosongkan tanggal untuk voucher berlaku selamanya</p>
             <button type="submit" class="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium py-2.5 rounded-lg transition">Simpan Voucher</button>
         </form>
     </div>
