@@ -1,4 +1,4 @@
-<?= $this->load->view('admin/layout/header', ['title'=>'Point of Sale'], TRUE) ?>
+<?= $this->load->view('admin/layout/header', ['title'=>'Kasir'], TRUE) ?>
 
 <style>
 .pos-scroll::-webkit-scrollbar { width: 5px; }

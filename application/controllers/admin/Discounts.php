@@ -25,9 +25,6 @@ class Discounts extends AdminBaseController {
                 'nilai'          => $this->input->post('nilai'),
                 'min_belanja'    => $this->input->post('min_belanja') ?: 0,
                 'target'         => 'semua',
-                'tanggal_mulai'  => $this->input->post('tanggal_mulai'),
-                'tanggal_selesai'=> $this->input->post('tanggal_selesai'),
-                'max_pemakaian'  => $this->input->post('max_pemakaian') ?: null,
                 'created_at'     => date('Y-m-d H:i:s'),
                 'is_active'      => 1,
             );

@@ -43,6 +43,7 @@
                 </a>
             </div>
             <nav class="p-3 space-y-1">
+                <?php if($this->session->userdata('admin_role') === 'admin'): ?>
                 <a href="<?= site_url('admin/dashboard') ?>" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-700 <?= ($this->uri->segment(2)=='dashboard'||$this->uri->segment(2)=='') ?'active':'' ?>">
                     <span class="iconify text-lg" data-icon="lucide:layout-dashboard"></span> Dashboard
                 </a>
@@ -56,13 +57,17 @@
                 <a href="<?= site_url('admin/users') ?>" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-700 <?= $this->uri->segment(2)=='users'?'active':'' ?>">
                     <span class="iconify text-lg" data-icon="lucide:user-cog"></span> User Admin
                 </a>
+                <?php endif; ?>
+
                 <p class="text-xs text-gray-400 uppercase tracking-wider mt-4 mb-2 px-3">Transaksi</p>
                 <a href="<?= site_url('admin/pos') ?>" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-700 <?= $this->uri->segment(2)=='pos'?'active':'' ?>">
-                    <span class="iconify text-lg" data-icon="lucide:shopping-basket"></span> POS
+                    <span class="iconify text-lg" data-icon="lucide:shopping-basket"></span> Kasir
                 </a>
                 <a href="<?= site_url('admin/transactions') ?>" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-700 <?= $this->uri->segment(2)=='transactions'?'active':'' ?>">
                     <span class="iconify text-lg" data-icon="lucide:receipt-text"></span> Transaksi
                 </a>
+
+                <?php if($this->session->userdata('admin_role') === 'admin'): ?>
                 <p class="text-xs text-gray-400 uppercase tracking-wider mt-4 mb-2 px-3">CRM Engine</p>
                 <a href="<?= site_url('admin/crm') ?>" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-700 <?= $this->uri->segment(2)=='crm'?'active':'' ?>">
                     <span class="iconify text-lg" data-icon="lucide:heart-handshake"></span> CRM Dashboard
@@ -79,6 +84,7 @@
                 <a href="<?= site_url('admin/discounts') ?>" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-700 <?= $this->uri->segment(2)=='discounts'?'active':'' ?>">
                     <span class="iconify text-lg" data-icon="lucide:ticket-percent"></span> Diskon & Voucher
                 </a>
+                <?php endif; ?>
             </nav>
             <div class="p-3 border-t border-gray-200 mt-auto">
                 <a href="<?= site_url('admin/auth/logout') ?>" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-red-600 hover:bg-red-50">

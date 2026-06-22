@@ -5,6 +5,7 @@ class Crm extends AdminBaseController {
 
     public function __construct() {
         parent::__construct();
+        $this->admin_only();
         $this->load->model('Customer_model');
         $this->load->model('Transaction_model');
         $this->load->model('Feedback_model');

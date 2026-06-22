@@ -19,43 +19,16 @@ class Discount_model extends CI_Model {
     public function get_by_code($code) {
         $this->db->where('kode_voucher', $code);
         $this->db->where('is_active', 1);
-        // Handle NULL dates - treat NULL as always valid
-        $this->db->group_start();
-        $this->db->where('tanggal_mulai <=', date('Y-m-d'));
-        $this->db->or_where('tanggal_mulai', NULL);
-        $this->db->group_end();
-        $this->db->group_start();
-        $this->db->where('tanggal_selesai >=', date('Y-m-d'));
-        $this->db->or_where('tanggal_selesai', NULL);
-        $this->db->group_end();
         return $this->db->get('discounts')->row();
     }
 
     public function get_active() {
         $this->db->where('is_active', 1);
-        // Handle NULL dates - treat NULL as always valid
-        $this->db->group_start();
-        $this->db->where('tanggal_mulai <=', date('Y-m-d'));
-        $this->db->or_where('tanggal_mulai', NULL);
-        $this->db->group_end();
-        $this->db->group_start();
-        $this->db->where('tanggal_selesai >=', date('Y-m-d'));
-        $this->db->or_where('tanggal_selesai', NULL);
-        $this->db->group_end();
         return $this->db->get('discounts')->result();
     }
 
     public function get_for_customer($customer_segment = 'Baru', $jenis_order = 'Online') {
         $this->db->where('is_active', 1);
-        // Handle NULL dates - treat NULL as always valid
-        $this->db->group_start();
-        $this->db->where('tanggal_mulai <=', date('Y-m-d'));
-        $this->db->or_where('tanggal_mulai', NULL);
-        $this->db->group_end();
-        $this->db->group_start();
-        $this->db->where('tanggal_selesai >=', date('Y-m-d'));
-        $this->db->or_where('tanggal_selesai', NULL);
-        $this->db->group_end();
         $this->db->group_start();
         $this->db->where('target', 'semua');
         $this->db->or_where('target', $jenis_order);
@@ -96,15 +69,6 @@ class Discount_model extends CI_Model {
 
     public function count_active() {
         $this->db->where('is_active', 1);
-        // Handle NULL dates - treat NULL as always valid
-        $this->db->group_start();
-        $this->db->where('tanggal_mulai <=', date('Y-m-d'));
-        $this->db->or_where('tanggal_mulai', NULL);
-        $this->db->group_end();
-        $this->db->group_start();
-        $this->db->where('tanggal_selesai >=', date('Y-m-d'));
-        $this->db->or_where('tanggal_selesai', NULL);
-        $this->db->group_end();
         return $this->db->count_all_results('discounts');
     }
 }

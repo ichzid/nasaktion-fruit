@@ -5,6 +5,7 @@ class Products extends AdminBaseController {
 
     public function __construct() {
         parent::__construct();
+        $this->admin_only();
         $this->load->model('Product_model');
         $this->load->model('Category_model');
     }

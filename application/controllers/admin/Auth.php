@@ -9,9 +9,13 @@ class Auth extends CI_Controller {
     }
 
     public function login() {
-        // If already logged in, redirect to dashboard
+        // If already logged in, redirect based on role
         if ($this->session->userdata('admin_logged_in')) {
-            redirect('admin/dashboard');
+            if ($this->session->userdata('admin_role') === 'admin') {
+                redirect('admin/dashboard');
+            } else {
+                redirect('admin/pos');
+            }
         }
 
         $this->form_validation->set_rules('username', 'Username', 'required|trim');
@@ -34,7 +38,11 @@ class Auth extends CI_Controller {
                     'admin_role' => $admin->role,
                 );
                 $this->session->set_userdata($session_data);
-                redirect('admin/dashboard');
+                if ($admin->role === 'admin') {
+                    redirect('admin/dashboard');
+                } else {
+                    redirect('admin/pos');
+                }
             } else {
                 $this->session->set_flashdata('error', 'Username atau password salah!');
                 redirect('admin/login');

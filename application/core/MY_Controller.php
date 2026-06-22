@@ -47,7 +47,7 @@ class AdminBaseController extends MY_Controller {
     protected function admin_only() {
         if (!$this->is_admin()) {
             $this->session->set_flashdata('error', 'Akses ditolak. Hanya admin yang diizinkan.');
-            redirect('admin/dashboard');
+            redirect('admin/pos');
         }
     }
 

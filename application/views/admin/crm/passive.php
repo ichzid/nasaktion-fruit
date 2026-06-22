@@ -43,7 +43,7 @@
                 </td>
                 <td class="px-4 py-3 text-center font-medium text-gray-700"><?= $c->total_transaksi ?? 0 ?></td>
                 <td class="px-4 py-3 text-gray-500 text-xs">
-                    <?= !empty($c->last_order) ? date('d M Y', strtotime($c->last_order)) : 'Belum pernah' ?>
+                    <?= !empty($c->last_transaction_at) ? date('d M Y', strtotime($c->last_transaction_at)) : 'Belum pernah' ?>
                 </td>
                 <td class="px-4 py-3 text-center">
                     <a href="<?= site_url('admin/crm/send_promo/'.$c->id) ?>"

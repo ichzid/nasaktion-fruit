@@ -13,7 +13,7 @@ class Pos extends AdminBaseController {
     }
 
     public function index() {
-        $data['title'] = 'Point of Sale';
+        $data['title'] = 'Kasir';
         $data['products'] = $this->Product_model->get_available();
         $data['categories'] = $this->Category_model->get_all();
         $this->render_admin('admin/pos/index', $data);

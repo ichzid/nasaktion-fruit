@@ -5,6 +5,7 @@ class Feedback extends AdminBaseController {
 
     public function __construct() {
         parent::__construct();
+        $this->admin_only();
         $this->load->model('Feedback_model');
     }
 

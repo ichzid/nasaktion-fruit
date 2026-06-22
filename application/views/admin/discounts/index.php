@@ -26,7 +26,7 @@
                 <p class="text-xs text-gray-500">Min. belanja Rp <?= number_format($d->min_belanja, 0, ',', '.') ?></p>
             </div>
             <div class="flex items-center justify-between text-xs text-gray-500">
-                <?php if($d->tanggal_mulai && $d->tanggal_selesai): ?>
+                <?php if(isset($d->tanggal_mulai) && isset($d->tanggal_selesai) && $d->tanggal_mulai && $d->tanggal_selesai): ?>
                 <span>Berlaku: <?= date('d M Y', strtotime($d->tanggal_mulai)) ?> - <?= date('d M Y', strtotime($d->tanggal_selesai)) ?></span>
                 <?php else: ?>
                 <span>Berlaku: Selamanya</span>
@@ -80,17 +80,7 @@
                 <label class="block text-sm font-medium text-gray-700 mb-1">Min. Belanja</label>
                 <input type="number" name="min_belanja" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none" value="0" min="0">
             </div>
-            <div class="grid grid-cols-2 gap-3">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Mulai</label>
-                    <input type="date" name="tanggal_mulai" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Selesai</label>
-                    <input type="date" name="tanggal_selesai" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none">
-                </div>
-            </div>
-            <p class="text-xs text-gray-400">Kosongkan tanggal untuk voucher berlaku selamanya</p>
+            <p class="text-xs text-gray-400">Voucher ini akan berlaku selamanya</p>
             <button type="submit" class="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium py-2.5 rounded-lg transition">Simpan Voucher</button>
         </form>
     </div>

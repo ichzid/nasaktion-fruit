@@ -58,7 +58,7 @@
                 <div class="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
                     <div>
                         <p class="text-sm font-medium text-gray-800"><?= $c->nama ?></p>
-                        <p class="text-xs text-gray-500">Terakhir belanja: <?= $c->last_transaction ? date('d M Y', strtotime($c->last_transaction)) : 'Belum pernah' ?></p>
+                        <p class="text-xs text-gray-500">Terakhir belanja: <?= !empty($c->last_transaction_at) ? date('d M Y', strtotime($c->last_transaction_at)) : 'Belum pernah' ?></p>
                     </div>
                     <a href="<?= site_url('admin/crm/send_promo/'.$c->id) ?>" class="text-xs bg-primary-100 text-primary-700 px-3 py-1 rounded-full hover:bg-primary-200 transition" onclick="return confirm('Kirim promo ke pelanggan ini?')">Kirim Promo</a>
                 </div>
