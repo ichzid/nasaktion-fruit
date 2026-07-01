@@ -92,6 +92,18 @@
 
                 <?php if($transaction->status == 'pending'): ?>
                 <div class="mt-8 border-t border-gray-50 pt-6">
+                    <h4 class="font-bold text-sm text-gray-800 mb-3">Rekening Pembayaran</h4>
+                    <div class="bg-primary-50/50 border border-primary-100 rounded-2xl p-4 mb-4 text-xs space-y-2">
+                        <div class="flex items-center justify-between pb-1 border-b border-primary-100/50">
+                            <span class="font-bold text-primary-800">BANK BCA</span>
+                            <span class="font-mono text-gray-700 select-all font-bold">1234567890</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-500">A.N.</span>
+                            <span class="font-medium text-gray-700">Nasaktion Fruit</span>
+                        </div>
+                    </div>
+                    
                     <h4 class="font-bold text-sm text-gray-800 mb-4">Konfirmasi Pembayaran</h4>
                     <p class="text-xs text-gray-500 mb-4 leading-relaxed">Silakan transfer sesuai nominal di atas, lalu unggah bukti transfer Anda di bawah ini:</p>
                     
