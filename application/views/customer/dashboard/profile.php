@@ -15,7 +15,7 @@
                     <label class="block text-sm font-bold text-gray-700 mb-2">Nama Lengkap</label>
                     <div class="relative">
                         <span class="iconify absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" data-icon="lucide:user"></span>
-                        <input type="text" name="nama" value="<?= set_value('nama', $customer->nama) ?>" class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:bg-white outline-none transition" placeholder="Masukkan nama lengkap">
+                        <input type="text" name="nama" value="<?= set_value('nama', isset($customer->nama) ? $customer->nama : '') ?>" class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:bg-white outline-none transition" placeholder="Masukkan nama lengkap">
                     </div>
                     <?= form_error('nama', '<p class="text-red-500 text-xs mt-1">', '</p>') ?>
                 </div>
@@ -24,14 +24,14 @@
                     <label class="block text-sm font-bold text-gray-700 mb-2">Nomor WhatsApp</label>
                     <div class="relative">
                         <span class="iconify absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" data-icon="lucide:phone"></span>
-                        <input type="text" name="no_hp" value="<?= set_value('no_hp', $customer->no_hp) ?>" class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:bg-white outline-none transition" placeholder="Masukkan nomor WhatsApp">
+                        <input type="text" name="no_hp" value="<?= set_value('no_hp', isset($customer->no_hp) ? $customer->no_hp : '') ?>" class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:bg-white outline-none transition" placeholder="Masukkan nomor WhatsApp">
                     </div>
                     <?= form_error('no_hp', '<p class="text-red-500 text-xs mt-1">', '</p>') ?>
                 </div>
 
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-2">Alamat Lengkap</label>
-                    <textarea name="alamat" rows="4" class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:bg-white outline-none transition" placeholder="Tuliskan alamat pengiriman utama Anda"><?= set_value('alamat', $customer->alamat) ?></textarea>
+                    <textarea name="alamat" rows="4" class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:bg-white outline-none transition" placeholder="Tuliskan alamat pengiriman utama Anda"><?= set_value('alamat', isset($customer->alamat) ? $customer->alamat : '') ?></textarea>
                 </div>
 
                 <div class="pt-4">
@@ -48,11 +48,11 @@
     <div class="grid grid-cols-2 gap-4 mt-8">
         <div class="bg-primary-50 border border-primary-100 rounded-2xl p-4">
             <p class="text-xs text-primary-600 font-bold mb-1">Point Loyalitas</p>
-            <p class="text-xl font-display font-black text-primary-700"><?= number_format($customer->point_loyalitas, 0, ',', '.') ?> <span class="text-xs font-medium">pts</span></p>
+            <p class="text-xl font-display font-black text-primary-700"><?= number_format(isset($customer->point_loyalitas) ? $customer->point_loyalitas : 0, 0, ',', '.') ?> <span class="text-xs font-medium">pts</span></p>
         </div>
         <div class="bg-purple-50 border border-purple-100 rounded-2xl p-4">
             <p class="text-xs text-purple-600 font-bold mb-1">Status Member</p>
-            <p class="text-xl font-display font-black text-purple-700"><?= $customer->segment ?></p>
+            <p class="text-xl font-display font-black text-purple-700"><?= isset($customer->segment) ? $customer->segment : 'Baru' ?></p>
         </div>
     </div>
 </div>
