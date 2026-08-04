@@ -35,11 +35,14 @@
                 <h3 class="font-medium text-gray-800 truncate"><?= $item->nama_buah ?></h3>
                 <p class="text-sm text-primary-600 font-semibold">Rp <?= number_format($item->harga_jual, 0, ',', '.') ?></p>
             </div>
-            <div class="flex items-center gap-2">
-                <a href="<?= site_url('customer/cart/update/'.$item->id.'/'.max(1,$item->qty-1)) ?>" class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center hover:bg-gray-200 transition text-sm">−</a>
-                <span class="w-8 text-center font-medium"><?= $item->qty ?></span>
-                <a href="<?= site_url('customer/cart/update/'.$item->id.'/'.($item->qty+1)) ?>" class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center hover:bg-gray-200 transition text-sm">+</a>
-            </div>
+            <form action="<?= site_url('customer/cart/update/'.$item->id) ?>" method="post" class="flex items-center bg-gray-100 rounded-xl p-1">
+                <button type="button" onclick="this.form.qty.value = Math.max(1, parseInt(this.form.qty.value, 10) - 1); this.form.submit();" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-red-500 transition">−</button>
+                <input type="number" name="qty" value="<?= $item->qty ?>" min="1" max="<?= isset($item->stok) ? $item->stok : $item->qty ?>"
+                       onchange="this.form.submit()" onkeydown="if(event.key === 'Enter') { event.preventDefault(); this.form.submit(); }"
+                       class="w-14 h-8 text-center text-sm font-bold bg-white border border-gray-200 rounded-lg outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-200 px-1"
+                       aria-label="Kuantitas <?= html_escape($item->nama_buah) ?>">
+                <button type="button" onclick="this.form.qty.value = parseInt(this.form.qty.value, 10) + 1; this.form.submit();" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary-600 transition">+</button>
+            </form>
             <p class="font-bold text-gray-800 w-28 text-right">Rp <?= number_format($item->harga_jual * $item->qty, 0, ',', '.') ?></p>
             <a href="<?= site_url('customer/cart/remove/'.$item->id) ?>" class="text-red-400 hover:text-red-600 p-1"><span class="iconify" data-icon="lucide:trash-2"></span></a>
         </div>

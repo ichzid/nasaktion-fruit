@@ -242,6 +242,36 @@ function updateQty(id, delta) {
     renderCart();
 }
 
+function setQty(id, value) {
+    if (!posCart[id]) return;
+
+    const qty = parseInt(value, 10);
+    if (Number.isNaN(qty)) return;
+
+    if (qty < 1) {
+        posCart[id].qty = 1;
+        showToast('Kuantitas minimal 1!', 'error');
+    } else if (qty > posCart[id].stok) {
+        posCart[id].qty = posCart[id].stok;
+        showToast('Kuantitas melebihi stok!', 'error');
+    } else {
+        posCart[id].qty = qty;
+    }
+
+    renderCart();
+}
+
+function commitQty(id, input) {
+    if (!posCart[id]) return;
+
+    if (input.value === '') {
+        input.value = posCart[id].qty;
+        return;
+    }
+
+    setQty(id, input.value);
+}
+
 function clearCart() {
     if (Object.keys(posCart).length === 0) return;
     if (!confirm('Kosongkan semua keranjang?')) return;
@@ -275,9 +305,14 @@ function renderCart() {
                 <p class="text-xs text-gray-400">Rp ${fmt(item.harga)} / ${item.satuan}</p>
             </div>
             <div class="flex items-center gap-1 shrink-0">
-                <button onclick="updateQty(${id},-1)" class="w-6 h-6 bg-gray-100 rounded text-sm font-bold hover:bg-red-100 hover:text-red-600 transition">−</button>
-                <span class="text-sm w-6 text-center font-semibold">${item.qty}</span>
-                <button onclick="updateQty(${id},1)" class="w-6 h-6 bg-gray-100 rounded text-sm font-bold hover:bg-green-100 hover:text-green-600 transition">+</button>
+                <button type="button" onclick="updateQty(${id},-1)" class="w-7 h-7 bg-gray-100 rounded text-sm font-bold hover:bg-red-100 hover:text-red-600 transition">−</button>
+                <input type="number" min="1" max="${item.stok}" value="${item.qty}"
+                       onblur="commitQty(${id}, this)"
+                       onkeydown="if(event.key === 'Enter') { event.preventDefault(); this.blur(); }"
+                       onclick="event.stopPropagation()"
+                       class="w-12 h-7 border border-gray-300 rounded text-center text-sm font-semibold outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-200 px-1"
+                       aria-label="Kuantitas ${item.nama}">
+                <button type="button" onclick="updateQty(${id},1)" class="w-7 h-7 bg-gray-100 rounded text-sm font-bold hover:bg-green-100 hover:text-green-600 transition">+</button>
             </div>
             <div class="text-right shrink-0 w-20">
                 <p class="text-sm font-semibold text-gray-800">Rp ${fmt(sub)}</p>

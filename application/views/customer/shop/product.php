@@ -56,7 +56,9 @@
                     <!-- Qty Control -->
                     <div class="flex items-center bg-gray-50 border border-gray-200 rounded-xl p-1 h-14">
                         <button type="button" onclick="updateQty(-1)" class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-white hover:shadow-sm text-gray-500 transition-all">-</button>
-                        <input type="number" id="qtyInput" value="1" min="1" max="<?= $product->stok ?>" class="w-12 text-center bg-transparent border-none font-bold text-gray-800 focus:ring-0 appearance-none" readonly>
+                        <input type="number" id="qtyInput" value="1" min="1" max="<?= $product->stok ?>"
+                               onblur="validateQty()" onkeydown="if(event.key === 'Enter') { event.preventDefault(); this.blur(); }"
+                               class="w-16 text-center bg-white border border-gray-200 rounded-lg font-bold text-gray-800 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none appearance-none">
                         <button type="button" onclick="updateQty(1)" class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-white hover:shadow-sm text-gray-500 transition-all">+</button>
                     </div>
                     
@@ -162,13 +164,20 @@
     const maxQty = <?= $product->stok ?>;
     const qtyInput = document.getElementById('qtyInput');
 
-    function updateQty(change) {
-        if(!qtyInput) return;
-        let val = parseInt(qtyInput.value) || 1;
-        val += change;
-        if(val < 1) val = 1;
-        if(val > maxQty) val = maxQty;
+    function validateQty() {
+        if (!qtyInput) return 1;
+
+        let val = parseInt(qtyInput.value, 10);
+        if (Number.isNaN(val) || val < 1) val = 1;
+        if (val > maxQty) val = maxQty;
         qtyInput.value = val;
+        return val;
+    }
+
+    function updateQty(change) {
+        if (!qtyInput) return;
+        qtyInput.value = validateQty() + change;
+        validateQty();
     }
 
     function showCartToast() {
@@ -183,7 +192,7 @@
         return;
         <?php endif; ?>
 
-        const qty = qtyInput ? qtyInput.value : 1;
+        const qty = qtyInput ? validateQty() : 1;
         const origHTML = btn.innerHTML;
         
         btn.innerHTML = '<span class="iconify animate-spin text-xl" data-icon="lucide:loader-2"></span> Memproses...';

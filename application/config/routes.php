@@ -53,8 +53,9 @@ $route['default_controller'] = 'home';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-// Admin routes
-$route['admin/login'] = 'admin/auth/login';
+// Unified authentication routes
+$route['login'] = 'customer/auth/login';
+$route['admin/login'] = 'customer/auth/login';
 $route['admin/logout'] = 'admin/auth/logout';
 $route['admin/auth/verify'] = 'admin/auth/verify';
 $route['admin/dashboard'] = 'admin/dashboard';
@@ -90,6 +91,7 @@ $route['admin/crm/loyalty'] = 'admin/crm/loyalty';
 
 // Customer routes
 $route['customer/login'] = 'customer/auth/login';
+$route['customer/auth/login_process'] = 'customer/auth/login_process';
 $route['customer/auth/google'] = 'customer/auth/google';
 $route['customer/auth/callback'] = 'customer/auth/google_callback';
 $route['customer/logout'] = 'customer/auth/logout';

@@ -92,7 +92,7 @@
                 </button>
             </div>
 
-            <!-- Login Form -->
+            <!-- Unified Login Form -->
             <form x-show="mode === 'login'"
                   x-transition:enter="transition ease-out duration-300"
                   x-transition:enter-start="opacity-0 translate-x-4"
@@ -103,18 +103,19 @@
                 
                 <div class="text-center mb-6">
                     <h2 class="text-xl font-bold text-gray-800">Selamat Datang Kembali!</h2>
-                    <p class="text-sm text-gray-500 mt-1">Masukkan nomor HP dan password Anda</p>
+                    <p class="text-sm text-gray-500 mt-1">Login pelanggan, kasir, dan admin dalam satu halaman</p>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Nomor HP</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Nomor HP atau Username</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <span class="iconify text-gray-400 text-lg" data-icon="lucide:phone"></span>
+                            <span class="iconify text-gray-400 text-lg" data-icon="lucide:user-round"></span>
                         </div>
-                        <input type="tel" name="no_hp" required placeholder="Contoh: 08123456789" 
+                        <input type="text" name="identity" required autocomplete="username" placeholder="Nomor HP pelanggan / username staf"
                                class="pl-10 w-full rounded-xl border border-gray-200 px-4 py-3 text-gray-800 bg-gray-50 focus:bg-white focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all outline-none">
                     </div>
+                    <p class="text-[11px] text-gray-400 mt-1.5">Pelanggan menggunakan nomor HP. Admin dan kasir menggunakan username.</p>
                 </div>
 
                 <div>

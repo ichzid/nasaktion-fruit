@@ -6,69 +6,77 @@ class Auth extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('Customer_model');
+        $this->load->model('Admin_model');
     }
 
     public function login() {
-        // Jika sudah login, lempar ke dashboard
+        if ($this->session->userdata('admin_logged_in')) {
+            redirect($this->session->userdata('admin_role') === 'admin' ? 'admin/dashboard' : 'admin/pos');
+        }
+
         if ($this->session->userdata('customer_logged_in')) {
             redirect('customer/dashboard');
         }
+
         $this->load->view('customer/auth/login');
     }
 
     public function login_process() {
-        $no_hp = $this->input->post('no_hp', true);
+        $identity = $this->input->post('identity', true);
+        if (!$identity) {
+            $identity = $this->input->post('no_hp', true) ?: $this->input->post('username', true);
+        }
+        $identity = trim((string) $identity);
         $password = $this->input->post('password');
 
-        if (!$no_hp || !$password) {
-            $this->session->set_flashdata('error', 'Nomor HP dan Password wajib diisi!');
-            redirect('customer/login');
+        if (!$identity || !$password) {
+            $this->session->set_flashdata('error', 'Nomor HP/username dan password wajib diisi!');
+            redirect('login');
         }
 
-        $customer = $this->Customer_model->get_by_phone($no_hp);
+        $admin = $this->Admin_model->verify_login($identity, $password);
+        if ($admin) {
+            $this->session->set_userdata(array(
+                'admin_logged_in' => TRUE,
+                'admin_id' => $admin->id,
+                'admin_username' => $admin->username,
+                'admin_nama' => $admin->nama_lengkap,
+                'admin_role' => $admin->role,
+            ));
 
-        if ($customer) {
-            if (empty($customer->password)) {
-                $this->session->set_flashdata('error', 'Akun ini didaftarkan di toko fisik. Silakan mendaftar ulang untuk membuat password!');
-                redirect('customer/login');
-            }
-
-            if (password_verify($password, $customer->password)) {
-                // Set session
-                $session_data = array(
-                    'customer_logged_in' => TRUE,
-                    'customer_id' => $customer->id,
-                    'customer_nama' => $customer->nama,
-                    'customer_no_hp' => $customer->no_hp,
-                    'customer_segment' => $customer->segment,
-                    'customer_avatar' => $customer->foto,
-                );
-                $this->session->set_userdata($session_data);
-
-                // Merging transient cart with saved cart
-                $current_cart = $this->session->userdata('shop_cart') ?: [];
-                $saved_cart = !empty($customer->cart_data) ? json_decode($customer->cart_data, true) : [];
-                if (is_array($saved_cart)) {
-                    foreach($current_cart as $pid => $item) {
-                        $saved_cart[$pid] = $item;
-                    }
-                    if (!empty($saved_cart)) {
-                        $this->session->set_userdata('shop_cart', $saved_cart);
-                        $this->db->where('id', $customer->id);
-                        $this->db->update('customers', ['cart_data' => json_encode($saved_cart)]);
-                    }
-                }
-
-                $this->session->set_flashdata('success', 'Selamat datang kembali, ' . $customer->nama . '!');
-                redirect('customer/dashboard');
-            } else {
-                $this->session->set_flashdata('error', 'Password salah!');
-                redirect('customer/login');
-            }
-        } else {
-            $this->session->set_flashdata('error', 'Nomor HP tidak terdaftar!');
-            redirect('customer/login');
+            redirect($admin->role === 'admin' ? 'admin/dashboard' : 'admin/pos');
         }
+
+        $customer = $this->Customer_model->get_by_phone($identity);
+        if (!$customer || empty($customer->password) || !password_verify($password, $customer->password)) {
+            $this->session->set_flashdata('error', 'Nomor HP/username atau password salah!');
+            redirect('login');
+        }
+
+        $this->session->set_userdata(array(
+            'customer_logged_in' => TRUE,
+            'customer_id' => $customer->id,
+            'customer_nama' => $customer->nama,
+            'customer_no_hp' => $customer->no_hp,
+            'customer_segment' => $customer->segment,
+            'customer_avatar' => $customer->foto,
+        ));
+
+        $current_cart = $this->session->userdata('shop_cart') ?: [];
+        $saved_cart = !empty($customer->cart_data) ? json_decode($customer->cart_data, true) : [];
+        if (is_array($saved_cart)) {
+            foreach ($current_cart as $pid => $item) {
+                $saved_cart[$pid] = $item;
+            }
+            if (!empty($saved_cart)) {
+                $this->session->set_userdata('shop_cart', $saved_cart);
+                $this->db->where('id', $customer->id);
+                $this->db->update('customers', array('cart_data' => json_encode($saved_cart)));
+            }
+        }
+
+        $this->session->set_flashdata('success', 'Selamat datang kembali, ' . $customer->nama . '!');
+        redirect('customer/dashboard');
     }
 
     public function register_process() {
@@ -123,6 +131,6 @@ class Auth extends CI_Controller {
             'customer_no_hp', 'customer_segment', 'customer_avatar', 'customer_email'
         ));
         $this->session->sess_destroy();
-        redirect('/');
+        redirect('login');
     }
 }

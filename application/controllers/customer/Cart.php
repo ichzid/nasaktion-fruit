@@ -18,6 +18,16 @@ class Cart extends CustomerBaseController {
         }
     }
 
+    private function _update_error($message) {
+        if ($this->input->is_ajax_request() || $this->input->post('product_id')) {
+            echo json_encode(array('success' => false, 'message' => $message));
+            return;
+        }
+
+        $this->session->set_flashdata('error', $message);
+        redirect('customer/cart');
+    }
+
     public function index() {
         $data['title'] = 'Keranjang Belanja';
         $cart = $this->session->userdata('shop_cart') ? $this->session->userdata('shop_cart') : array();
@@ -97,8 +107,19 @@ class Cart extends CustomerBaseController {
         $cart = $this->session->userdata('shop_cart') ? $this->session->userdata('shop_cart') : array();
 
         if (isset($cart[$product_id]) && $qty > 0) {
-            // Check stock logic here if needed
+            $product = $this->Product_model->get_by_id($product_id);
+            if (!$product || !$product->is_active) {
+                $this->_update_error('Produk tidak tersedia.');
+                return;
+            }
+
+            if ($qty > $product->stok) {
+                $this->_update_error('Kuantitas melebihi stok. Stok tersedia: ' . $product->stok . ' ' . $product->satuan . '.');
+                return;
+            }
+
             $cart[$product_id]['qty'] = $qty;
+            $cart[$product_id]['stok'] = $product->stok;
             $cart[$product_id]['subtotal'] = $qty * $cart[$product_id]['harga'];
         } elseif ($qty <= 0) {
             unset($cart[$product_id]);
