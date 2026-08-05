@@ -1,6 +1,6 @@
--- MySQL dump 10.13  Distrib 8.0.27, for macos11 (arm64)
+-- MySQL dump 10.13  Distrib 9.6.0, for macos26.4 (arm64)
 --
--- Host: 127.0.0.1    Database: db_nasaktion
+-- Host: localhost    Database: db_nasaktion
 -- ------------------------------------------------------
 -- Server version	9.6.0
 
@@ -21,7 +21,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 -- GTID state at the beginning of the backup 
 --
 
--- SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'e059fd58-5b35-11f1-912e-8d5d2abc31bf:1-130222';
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'e059fd58-5b35-11f1-912e-8d5d2abc31bf:1-183739';
 
 --
 -- Table structure for table `admins`
@@ -144,7 +144,7 @@ CREATE TABLE `customers` (
 
 LOCK TABLES `customers` WRITE;
 /*!40000 ALTER TABLE `customers` DISABLE KEYS */;
-INSERT INTO `customers` VALUES (1,'John Doe','081234567890','$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',NULL,NULL,'Unified',0,0.00,0,'Baru',NULL,NULL,'2026-04-22 12:45:35','2026-06-22 06:59:30');
+INSERT INTO `customers` VALUES (1,'John Doe','081234567890','$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',NULL,NULL,'Unified',0,0.00,0,'Baru',NULL,'{\"18\":{\"product_id\":\"18\",\"nama_buah\":\"Buah Nanas\",\"harga\":\"15000.00\",\"qty\":\"1\",\"subtotal\":15000,\"foto\":\"nanas.jpg\",\"satuan\":\"kg\",\"stok\":\"55\"},\"1\":{\"product_id\":\"1\",\"nama_buah\":\"Buah Apel\",\"harga\":\"35000.00\",\"qty\":1,\"subtotal\":35000,\"foto\":\"apel.jpg\",\"satuan\":\"kg\",\"stok\":\"51\"}}','2026-04-22 12:45:35','2026-08-04 16:57:09');
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -256,7 +256,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,3,'Buah Apel','Impor',NULL,NULL,0.00,35000.00,49,'kg',1,'2026-06-22 07:06:03','2026-06-22 07:20:18'),(2,3,'Buah Anggur','Impor',NULL,NULL,0.00,35000.00,49,'kg',1,'2026-06-22 07:06:10','2026-06-22 07:20:18'),(3,3,'Buah Pir','Impor',NULL,NULL,0.00,30000.00,50,'kg',1,'2026-06-22 07:06:10','2026-06-22 07:06:10'),(4,3,'Buah Jeruk','Impor',NULL,NULL,0.00,25000.00,50,'kg',1,'2026-06-22 07:06:10','2026-06-22 07:06:10'),(5,3,'Buah Kurma','Impor',NULL,NULL,0.00,70000.00,50,'kg',1,'2026-06-22 07:06:10','2026-06-22 07:06:10'),(7,3,'Buah Lengkeng ( Longan )','Impor',NULL,NULL,0.00,50000.00,50,'kg',1,'2026-06-22 07:06:10','2026-06-22 07:06:10'),(8,3,'Buah Stroberi','Impor',NULL,NULL,0.00,65000.00,50,'kg',1,'2026-06-22 07:06:10','2026-06-22 07:06:10'),(9,3,'Buah Bluberry','Impor',NULL,NULL,0.00,70000.00,50,'kg',1,'2026-06-22 07:06:10','2026-06-22 07:06:10'),(10,3,'Buah Ceri','Impor',NULL,NULL,0.00,85000.00,50,'kg',1,'2026-06-22 07:06:10','2026-06-22 07:06:10'),(11,1,'Buah Manggis','Ekspor',NULL,NULL,0.00,40000.00,50,'kg',1,'2026-06-22 07:06:15','2026-06-22 07:06:15'),(12,1,'Buah Salak','Ekspor',NULL,NULL,0.00,15000.00,50,'kg',1,'2026-06-22 07:06:15','2026-06-22 07:06:15'),(13,1,'Buah Mangga','Ekspor',NULL,NULL,0.00,30000.00,50,'kg',1,'2026-06-22 07:06:15','2026-06-22 07:06:15'),(14,1,'Buah Durian','Ekspor',NULL,NULL,0.00,35000.00,50,'kg',1,'2026-06-22 07:06:15','2026-06-22 07:06:15'),(15,1,'Buah Rambutan','Ekspor',NULL,NULL,0.00,15000.00,50,'kg',1,'2026-06-22 07:06:15','2026-06-22 07:06:15'),(16,1,'Buah Jambu Kristal','Lokal',NULL,NULL,0.00,25000.00,50,'kg',1,'2026-06-22 07:06:21','2026-06-22 07:06:21'),(17,1,'Buah Belimbing','Lokal',NULL,NULL,0.00,25000.00,49,'kg',1,'2026-06-22 07:06:21','2026-06-22 07:20:18'),(18,1,'Buah Nanas','Lokal',NULL,NULL,0.00,15000.00,50,'kg',1,'2026-06-22 07:06:21','2026-06-22 07:06:21'),(19,1,'Buah Buah Naga','Lokal',NULL,NULL,0.00,20000.00,50,'kg',1,'2026-06-22 07:06:21','2026-06-22 07:06:21'),(20,1,'Buah Pepaya','Lokal',NULL,NULL,0.00,10000.00,50,'kg',1,'2026-06-22 07:06:21','2026-06-22 07:06:21');
+INSERT INTO `products` VALUES (1,3,'Buah Apel','Impor','apel.jpg',NULL,0.00,35000.00,51,'kg',1,'2026-06-22 07:06:03','2026-08-04 14:53:28'),(2,3,'Buah Anggur','Impor','anggur.jpg',NULL,0.00,35000.00,87,'kg',1,'2026-06-22 07:06:10','2026-08-04 14:53:28'),(3,3,'Buah Pir','Impor','pir.jpg',NULL,0.00,30000.00,76,'kg',1,'2026-06-22 07:06:10','2026-08-04 14:53:28'),(4,3,'Buah Jeruk','Impor','jeruk.jpg',NULL,0.00,25000.00,71,'kg',1,'2026-06-22 07:06:10','2026-08-04 14:53:28'),(5,3,'Buah Kurma','Impor','kurma.jpg',NULL,0.00,70000.00,78,'kg',1,'2026-06-22 07:06:10','2026-08-04 14:53:28'),(7,3,'Buah Lengkeng ( Longan )','Impor','lengkeng.jpg',NULL,0.00,50000.00,75,'kg',1,'2026-06-22 07:06:10','2026-08-04 14:53:28'),(8,3,'Buah Stroberi','Impor','stroberi.jpg',NULL,0.00,65000.00,94,'kg',1,'2026-06-22 07:06:10','2026-08-04 14:53:28'),(9,3,'Buah Bluberry','Impor','blueberry.jpg',NULL,0.00,70000.00,92,'kg',1,'2026-06-22 07:06:10','2026-08-04 14:53:28'),(10,3,'Buah Ceri','Impor','ceri.jpg',NULL,0.00,85000.00,78,'kg',1,'2026-06-22 07:06:10','2026-08-04 14:53:28'),(11,1,'Buah Manggis','Ekspor','manggis.jpg',NULL,0.00,40000.00,63,'kg',1,'2026-06-22 07:06:15','2026-08-04 14:53:28'),(12,1,'Buah Salak','Ekspor','salak.jpg',NULL,0.00,15000.00,83,'kg',1,'2026-06-22 07:06:15','2026-08-04 14:53:28'),(13,1,'Buah Mangga','Ekspor','mangga.jpg',NULL,0.00,30000.00,75,'kg',1,'2026-06-22 07:06:15','2026-08-04 14:53:28'),(14,1,'Buah Durian','Ekspor','durian.jpg',NULL,0.00,35000.00,76,'kg',1,'2026-06-22 07:06:15','2026-08-04 14:53:28'),(15,1,'Buah Rambutan','Ekspor','rambutan.jpg',NULL,0.00,15000.00,53,'kg',1,'2026-06-22 07:06:15','2026-08-04 14:53:28'),(16,1,'Buah Jambu Kristal','Lokal','jambu-kristal.jpg',NULL,0.00,25000.00,89,'kg',1,'2026-06-22 07:06:21','2026-08-04 14:53:28'),(17,1,'Buah Belimbing','Lokal','belimbing.jpg',NULL,0.00,25000.00,85,'kg',1,'2026-06-22 07:06:21','2026-08-04 14:53:28'),(18,1,'Buah Nanas','Lokal','nanas.jpg',NULL,0.00,15000.00,55,'kg',1,'2026-06-22 07:06:21','2026-08-04 14:53:28'),(19,1,'Buah Buah Naga','Lokal','buah-naga.jpg',NULL,0.00,20000.00,76,'kg',1,'2026-06-22 07:06:21','2026-08-04 14:53:28'),(20,1,'Buah Pepaya','Lokal','pepaya.jpg',NULL,0.00,10000.00,62,'kg',1,'2026-06-22 07:06:21','2026-08-04 14:53:28');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -340,10 +340,6 @@ LOCK TABLES `transactions` WRITE;
 INSERT INTO `transactions` VALUES (1,'NKF202606220001',NULL,2,NULL,'2026-06-22 07:20:18',95000.00,0.00,95000.00,'Offline','completed',NULL,NULL,'','2026-06-22 07:20:18','2026-06-22 07:20:18');
 /*!40000 ALTER TABLE `transactions` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping routines for database 'db_nasaktion'
---
 SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -355,4 +351,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-22 14:24:23
+-- Dump completed on 2026-08-05 11:44:44
