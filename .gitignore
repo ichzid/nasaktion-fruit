@@ -33,4 +33,9 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 
 # User specifically requested to ignore:
 application/config/google.php
-uploads/
+uploads/*
+!uploads/products/
+!uploads/products/*.jpg
+!uploads/products/*.png
+!uploads/products/index.html
+!uploads/index.html
