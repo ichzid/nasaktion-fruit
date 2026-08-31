@@ -44,7 +44,7 @@ class Auth extends CI_Controller {
                 'admin_role' => $admin->role,
             ));
 
-            redirect($admin->role === 'admin' ? 'admin/dashboard' : 'admin/pos');
+            redirect(in_array($admin->role, array('admin', 'owner'), TRUE) ? 'admin/dashboard' : 'admin/pos');
         }
 
         $customer = $this->Customer_model->get_by_phone($identity);

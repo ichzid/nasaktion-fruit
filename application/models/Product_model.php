@@ -98,6 +98,14 @@ class Product_model extends CI_Model {
         return $this->db->get('products')->result();
     }
 
+    public function get_stock_report() {
+        $this->db->select('p.nama_buah, p.jenis, p.stok, p.satuan, p.harga_jual AS harga, p.is_active, p.updated_at, c.nama_kategori');
+        $this->db->from('products p');
+        $this->db->join('categories c', 'c.id = p.category_id', 'left');
+        $this->db->order_by('p.nama_buah', 'ASC');
+        return $this->db->get()->result();
+    }
+
     public function get_featured($limit = 8) {
         $this->db->select('p.*, c.nama_kategori');
         $this->db->from('products p');

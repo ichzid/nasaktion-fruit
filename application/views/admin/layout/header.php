@@ -43,10 +43,21 @@
                 </a>
             </div>
             <nav class="p-3 space-y-1">
-                <?php if($this->session->userdata('admin_role') === 'admin'): ?>
+                <?php $role = $this->session->userdata('admin_role'); ?>
+                <?php if(in_array($role, ['admin', 'owner'], TRUE)): ?>
                 <a href="<?= site_url('admin/dashboard') ?>" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-700 <?= ($this->uri->segment(2)=='dashboard'||$this->uri->segment(2)=='') ?'active':'' ?>">
                     <span class="iconify text-lg" data-icon="lucide:layout-dashboard"></span> Dashboard
                 </a>
+                <a href="<?= site_url('admin/users') ?>" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-700 <?= $this->uri->segment(2)=='users'?'active':'' ?>">
+                    <span class="iconify text-lg" data-icon="lucide:user-cog"></span> User Admin
+                </a>
+                <a href="<?= site_url('admin/reports') ?>" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-700 <?= $this->uri->segment(2)=='reports'?'active':'' ?>">
+                    <span class="iconify text-lg" data-icon="lucide:file-chart-column"></span> Laporan
+                </a>
+                <?php endif; ?>
+
+                <?php if($role !== 'owner'): ?>
+                <?php if($role === 'admin'): ?>
                 <p class="text-xs text-gray-400 uppercase tracking-wider mt-4 mb-2 px-3">Master Data</p>
                 <a href="<?= site_url('admin/products') ?>" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-700 <?= $this->uri->segment(2)=='products'?'active':'' ?>">
                     <span class="iconify text-lg" data-icon="lucide:package-search"></span> Produk
@@ -54,11 +65,7 @@
                 <a href="<?= site_url('admin/categories') ?>" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-700 <?= $this->uri->segment(2)=='categories'?'active':'' ?>">
                     <span class="iconify text-lg" data-icon="lucide:boxes"></span> Kategori
                 </a>
-                <a href="<?= site_url('admin/users') ?>" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-700 <?= $this->uri->segment(2)=='users'?'active':'' ?>">
-                    <span class="iconify text-lg" data-icon="lucide:user-cog"></span> User Admin
-                </a>
                 <?php endif; ?>
-
                 <p class="text-xs text-gray-400 uppercase tracking-wider mt-4 mb-2 px-3">Transaksi</p>
                 <a href="<?= site_url('admin/pos') ?>" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-700 <?= $this->uri->segment(2)=='pos'?'active':'' ?>">
                     <span class="iconify text-lg" data-icon="lucide:shopping-basket"></span> Kasir
@@ -66,6 +73,7 @@
                 <a href="<?= site_url('admin/transactions') ?>" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-700 <?= $this->uri->segment(2)=='transactions'?'active':'' ?>">
                     <span class="iconify text-lg" data-icon="lucide:receipt-text"></span> Transaksi
                 </a>
+                <?php endif; ?>
 
                 <?php if($this->session->userdata('admin_role') === 'admin'): ?>
                 <p class="text-xs text-gray-400 uppercase tracking-wider mt-4 mb-2 px-3">CRM Engine</p>

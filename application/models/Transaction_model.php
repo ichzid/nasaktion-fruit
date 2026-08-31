@@ -124,6 +124,17 @@ class Transaction_model extends CI_Model {
         return $result->total ? $result->total : 0;
     }
 
+    public function get_sales_report($start_date, $end_date) {
+        $this->db->select('t.invoice_no, t.tgl, t.jenis_order, t.status, t.subtotal, t.diskon_amount, t.total, c.nama, a.nama_lengkap');
+        $this->db->from('transactions t');
+        $this->db->join('customers c', 'c.id = t.customer_id', 'left');
+        $this->db->join('admins a', 'a.id = t.admin_id', 'left');
+        $this->db->where('t.tgl >=', $start_date . ' 00:00:00');
+        $this->db->where('t.tgl <=', $end_date . ' 23:59:59');
+        $this->db->order_by('t.tgl', 'DESC');
+        return $this->db->get()->result();
+    }
+
     public function get_sales_chart_data($days = 7) {
         $this->db->select('DATE(tgl) as date, SUM(total) as total_sales, COUNT(*) as total_orders');
         $this->db->where('tgl >=', date('Y-m-d', strtotime("-{$days} days")));

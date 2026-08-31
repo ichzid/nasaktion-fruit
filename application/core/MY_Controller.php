@@ -19,6 +19,7 @@ class AdminBaseController extends MY_Controller {
         parent::__construct();
         $this->check_admin_auth();
         $this->load_admin_data();
+        $this->check_owner_scope();
     }
 
     private function check_admin_auth() {
@@ -36,12 +37,34 @@ class AdminBaseController extends MY_Controller {
         );
     }
 
+    private function check_owner_scope() {
+        if ($this->admin_data['role'] !== 'owner') {
+            return;
+        }
+        $allowed = array('dashboard', 'users', 'reports', 'auth');
+        if (!in_array($this->router->class, $allowed, TRUE)) {
+            $this->session->set_flashdata('error', 'Akses owner terbatas pada dashboard, users, dan laporan.');
+            redirect('admin/dashboard');
+        }
+    }
+
     protected function is_admin() {
         return $this->admin_data['role'] === 'admin';
     }
 
     protected function is_kasir() {
         return $this->admin_data['role'] === 'kasir';
+    }
+
+    protected function is_owner() {
+        return $this->admin_data['role'] === 'owner';
+    }
+
+    protected function owner_access() {
+        if (!$this->is_admin() && !$this->is_owner()) {
+            $this->session->set_flashdata('error', 'Akses ditolak. Hanya admin atau owner yang diizinkan.');
+            redirect('admin/pos');
+        }
     }
 
     protected function admin_only() {

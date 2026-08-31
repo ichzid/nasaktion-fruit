@@ -20,6 +20,7 @@
                 <label class="block text-sm font-medium text-gray-700 mb-1">Role *</label>
                 <select name="role" class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm outline-none">
                     <option value="admin" <?= set_select('role', 'admin', isset($user)&&$user->role=='admin') ?>>Admin</option>
+                    <option value="owner" <?= set_select('role', 'owner', isset($user)&&$user->role=='owner') ?>>Owner</option>
                     <option value="kasir" <?= set_select('role', 'kasir', isset($user)&&$user->role=='kasir') ?>>Kasir</option>
                 </select>
             </div>

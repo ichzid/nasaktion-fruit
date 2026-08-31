@@ -6,7 +6,7 @@ class Users extends AdminBaseController {
     public function __construct() {
         parent::__construct();
         $this->load->model('Admin_model');
-        $this->admin_only();
+        $this->owner_access();
     }
 
     public function index() {
@@ -19,7 +19,7 @@ class Users extends AdminBaseController {
         $this->form_validation->set_rules('username', 'Username', 'required|trim|is_unique[admins.username]');
         $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]');
         $this->form_validation->set_rules('nama_lengkap', 'Nama Lengkap', 'required|trim');
-        $this->form_validation->set_rules('role', 'Role', 'required');
+        $this->form_validation->set_rules('role', 'Role', 'required|in_list[admin,owner,kasir]');
 
         if ($this->form_validation->run() == FALSE) {
             $data['title'] = 'Tambah User';
@@ -73,7 +73,7 @@ class Users extends AdminBaseController {
             }
             $password = $this->input->post('password');
             if (!empty($password)) {
-                $input['password'] = password_hash($password, PASSWORD_DEFAULT);
+                $input['password'] = $password;
             }
             if ($this->Admin_model->update($id, $input)) {
                 $this->session->set_flashdata('success', 'User berhasil diperbarui!');
