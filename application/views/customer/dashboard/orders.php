@@ -58,9 +58,14 @@
                         <p class="text-xs text-gray-400 mb-0.5">Total Bayar</p>
                         <p class="font-display font-black text-primary-600">Rp <?= number_format($t->total, 0, ',', '.') ?></p>
                     </div>
-                    <a href="<?= site_url('customer/dashboard/order_detail/'.$t->id) ?>" class="bg-white border border-gray-200 text-gray-600 px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-gray-50 hover:border-gray-300 transition shrink-0">
-                        Detail
-                    </a>
+                    <div class="flex items-center gap-2">
+                        <a href="<?= site_url('customer/dashboard/order_detail/'.$t->id) ?>" class="bg-white border border-gray-200 text-gray-600 px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-gray-50 hover:border-gray-300 transition shrink-0">
+                            Detail
+                        </a>
+                        <?php if($t->jenis_order === 'Online' && in_array($t->status, ['verified', 'shipped', 'completed'], TRUE)): ?>
+                        <a href="<?= site_url('customer/dashboard/print_invoice/'.$t->id) ?>" target="_blank" rel="noopener" class="bg-primary-600 text-white px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-primary-700 transition shrink-0">Cetak Invoice</a>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
         </div>

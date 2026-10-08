@@ -90,6 +90,12 @@
                     </div>
                 </div>
 
+                <?php if($transaction->jenis_order === 'Online' && in_array($transaction->status, ['verified', 'shipped', 'completed'], TRUE)): ?>
+                <a href="<?= site_url('customer/dashboard/print_invoice/'.$transaction->id) ?>" target="_blank" rel="noopener" class="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-primary-600 py-3 font-bold text-white hover:bg-primary-700">
+                    <span class="iconify" data-icon="lucide:printer"></span> Cetak Invoice
+                </a>
+                <?php endif; ?>
+
                 <?php if($transaction->status == 'pending'): ?>
                 <div class="mt-8 border-t border-gray-50 pt-6">
                     <h4 class="font-bold text-sm text-gray-800 mb-3">Rekening Pembayaran</h4>

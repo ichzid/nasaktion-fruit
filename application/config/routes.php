@@ -101,6 +101,7 @@ $route['customer/auth/google'] = 'customer/auth/google';
 $route['customer/auth/callback'] = 'customer/auth/google_callback';
 $route['customer/logout'] = 'customer/auth/logout';
 $route['customer/dashboard'] = 'customer/dashboard';
+$route['customer/dashboard/print_invoice/(:num)'] = 'customer/dashboard/print_invoice/$1';
 $route['customer/shop'] = 'customer/shop';
 $route['customer/cart'] = 'customer/cart';
 $route['customer/cart/add/(:num)'] = 'customer/cart/add/$1';

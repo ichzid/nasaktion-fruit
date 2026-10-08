@@ -74,6 +74,19 @@ class Dashboard extends CustomerBaseController {
         $this->render_customer('customer/dashboard/order_detail', $data);
     }
 
+    public function print_invoice($id) {
+        $transaction = $this->Transaction_model->get_by_id($id);
+        if (!$transaction || (int) $transaction->customer_id !== (int) $this->customer_data['customer_id'] || $transaction->jenis_order !== 'Online' || !in_array($transaction->status, array('verified', 'shipped', 'completed'), TRUE)) {
+            show_404();
+            return;
+        }
+
+        $this->load->view('customer/dashboard/invoice', array(
+            'transaction' => $transaction,
+            'items' => $this->Transaction_model->get_items($id)
+        ));
+    }
+
     public function upload_payment($id) {
         $customer_id = $this->customer_data['customer_id'];
         $transaction = $this->Transaction_model->get_by_id($id);
